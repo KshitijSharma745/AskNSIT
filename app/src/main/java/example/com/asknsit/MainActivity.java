@@ -1,10 +1,17 @@
 package example.com.asknsit;
 
+import android.app.SearchManager;
+import android.content.Context;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.SearchView;
+import android.support.v7.widget.Toolbar;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.widget.Toast;
 
 import com.firebase.ui.auth.AuthUI;
@@ -42,6 +49,9 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        Toolbar homeToolbar = (Toolbar) findViewById(R.id.homeToolbar);
+        setSupportActionBar(homeToolbar);
 
         firebaseDatabase = FirebaseDatabase.getInstance();
         databaseReference = firebaseDatabase.getReference().child("messages");
@@ -143,6 +153,70 @@ public class MainActivity extends AppCompatActivity {
 
 
 
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater menuInflater = getMenuInflater();
+        menuInflater.inflate(R.menu.home_menu, menu);
+
+        //getting the search view from the menu
+        MenuItem searchViewItem = menu.findItem(R.id.menuSearch);
+
+        //getting search manager from systemservice
+        SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
+
+        //getting the search view
+        final SearchView searchView = (SearchView) searchViewItem.getActionView();
+
+        //you can put a hint for the search input field
+        searchView.setQueryHint("Search Tutorials...");
+        searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
+
+        //by setting it true we are making it iconified
+        //so the search input will show up after taping the search iconified
+        //if you want to make it visible all the time make it false
+        searchView.setIconifiedByDefault(true);
+
+        //here we will get the search query
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+
+                //do the search here
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                return false;
+            }
+        });
+
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        switch(item.getItemId()){
+            case R.id.home_menu_AboutUs:
+                Toast.makeText(this, "You clicked about", Toast.LENGTH_SHORT).show();
+                break;
+
+            case R.id.home_menu_Settings:
+                Toast.makeText(this, "You clicked settings", Toast.LENGTH_SHORT).show();
+                break;
+
+            case R.id.home_menu_Logout: AuthUI.getInstance().signOut(this);
+                Toast.makeText(this, "Logout Successful", Toast.LENGTH_SHORT).show();
+                break;
+
+            default:
+                return super.onOptionsItemSelected(item);
+
+        }
+        return true;
     }
 
 
