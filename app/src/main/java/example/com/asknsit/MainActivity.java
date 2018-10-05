@@ -12,6 +12,8 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.Toast;
 
 import com.firebase.ui.auth.AuthUI;
@@ -25,6 +27,8 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
+import com.google.firebase.auth.PhoneAuthCredential;
+import com.google.firebase.auth.PhoneAuthProvider;
 
 import java.util.Arrays;
 
@@ -43,6 +47,17 @@ public class MainActivity extends AppCompatActivity {
     private StorageReference firebaseStorageReference;
     private FirebaseRemoteConfig remoteConfig;
 
+
+    private boolean mVerificationInProgress = false;
+    private String mVerificationId;
+    private PhoneAuthProvider.ForceResendingToken mResendToken;
+    private PhoneAuthProvider.OnVerificationStateChangedCallbacks mCallbacks;
+
+    private EditText phoneNumberField, smsCodeVerificationField;
+    private Button startVerficationButton, verifyPhoneButton;
+
+    private String verificationid;
+
     private String mUsername;
 
     @Override
@@ -54,7 +69,7 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(homeToolbar);
 
         firebaseDatabase = FirebaseDatabase.getInstance();
-        databaseReference = firebaseDatabase.getReference().child("messages");
+        databaseReference = firebaseDatabase.getReference();
         firebaseAuth = FirebaseAuth.getInstance();
 
         mUsername = ANONYMOUS;
@@ -70,9 +85,12 @@ public class MainActivity extends AppCompatActivity {
                             AuthUI.getInstance()
                                     .createSignInIntentBuilder()
                                     .setIsSmartLockEnabled(false)
+                                    .setLogo(R.drawable.calendar)
+                                    .setTheme(R.style.LoginTheme)
                                     .setAvailableProviders(Arrays.asList(
                                             new AuthUI.IdpConfig.GoogleBuilder().build(),
-                                            new AuthUI.IdpConfig.EmailBuilder().build()))
+                                            new AuthUI.IdpConfig.EmailBuilder().build(),
+                                            new AuthUI.IdpConfig.PhoneBuilder().build()))
                                     .build(),
                             RC_SIGN_IN);
                 } else {
@@ -170,7 +188,7 @@ public class MainActivity extends AppCompatActivity {
         final SearchView searchView = (SearchView) searchViewItem.getActionView();
 
         //you can put a hint for the search input field
-        searchView.setQueryHint("Search Tutorials...");
+        searchView.setQueryHint("Search Questions...");
         searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
 
         //by setting it true we are making it iconified

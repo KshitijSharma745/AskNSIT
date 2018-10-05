@@ -3,9 +3,39 @@
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
         <!-- Customize your theme here. -->
-        <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="colorAccent">@color/colorAccent</item>
+        <item name="colorPrimary">#FAFAFA</item>
+        <item name="colorPrimaryDark">#E0E0E0</item>
+        <item name="colorAccent">#E65100</item>
     </style>
 
+    <style name="LoginTheme" parent="FirebaseUI">
+        <item name="colorPrimary">#FAFAFA</item>
+        <item name="colorPrimaryDark">#E0E0E0</item>
+        <item name="colorAccent">#E65100</item>
+        <item name="colorButtonNormal">#E65100</item>
+        <item name="colorControlNormal">#FB8C00</item>
+        <item name="colorControlActivated">#F57C00</item>
+        <item name="colorControlHighlight">#E65100</item>
+        <item name="android:textColor">#000000</item>
+        <item name="actionMenuTextColor">#000000</item>
+        <item name="android:textColorPrimary">#000000</item>
+        <item name="android:textColorSecondary">#000000</item>
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+
+        <item name="android:textColorHint">#000000</item>
+    </style>
+
+    <style name="FirebaseUI.Text">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:fontFamily">sans-serif</item>
+        <item name="android:textColor">#000000</item>
+        <item name="android:textColorPrimary">#000000</item>
+        <item name="android:textColorSecondary">#000000</item>
+    </style>
+
+    <style name="FirebaseUI.Text.Link">
+        <item name="android:textColor">#18FFFF</item>
+    </style>
 </resources>
